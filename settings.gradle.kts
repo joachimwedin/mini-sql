@@ -5,3 +5,4 @@ plugins {
 rootProject.name = "mini-sql"
 
 include("engine")
+include("bridge")
