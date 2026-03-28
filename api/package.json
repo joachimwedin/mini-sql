@@ -1,5 +1,5 @@
 {
-  "name": "@mini-sql/bridge",
+  "name": "@mini-sql/api",
   "version": "0.1.0",
   "description": "TypeScript API for Mini SQL Engine",
   "type": "module",

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from './assets/vite.svg'
 import heroImg from './assets/hero.png'
-import { init, helloWorld } from './generated/lib/api'
+import { init, helloWorld } from '@mini-sql/api'
 import './App.css'
 
 function App() {
