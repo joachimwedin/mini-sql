@@ -7,3 +7,4 @@ rootProject.name = "mini-sql"
 include("engine")
 include("typescript-api")
 include("api")
+include("playground")
