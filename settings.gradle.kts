@@ -5,4 +5,5 @@ plugins {
 rootProject.name = "mini-sql"
 
 include("engine")
-include("bridge")
+include("typescript-api")
+include("api")
