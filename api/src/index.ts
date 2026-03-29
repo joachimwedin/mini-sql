@@ -4,7 +4,7 @@ export async function init(): Promise<void> {
   if (wasmModule) return;
   
   try {
-    wasmModule = await import('./generated/wasm/mini-sql-engine.mjs');
+    wasmModule = await import('./wasm/mini-sql-engine.mjs');
   } catch (error) {
     console.error('Failed to load WASM engine:', error);
     throw new Error('Could not initialize SQL engine');

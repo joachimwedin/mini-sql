@@ -7,7 +7,7 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc",
-    "postbuild": "cp -r src/generated dist/generated 2>/dev/null || true",
+    "postbuild": "cp -r src/wasm dist/wasm 2>/dev/null || true",
     "dev": "tsc --watch",
     "test": "vitest"
   },

@@ -12,7 +12,7 @@ tasks.register("buildWasm") {
     doLast {
         val engineBuildDir = project(":engine").buildDir
         val engineWasmDir = File(engineBuildDir, "compileSync/wasmJs/main/productionExecutable/optimized")
-        val bridgeWasmDir = File(project.projectDir, "src/generated/wasm")
+        val bridgeWasmDir = File(project.projectDir, "src/wasm")
         
         if (!engineWasmDir.exists()) {
             println("Warning: Engine WASM build directory not found at ${engineWasmDir.absolutePath}")

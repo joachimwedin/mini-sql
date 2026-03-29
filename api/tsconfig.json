@@ -16,6 +16,6 @@
     "noEmitOnError": false
   },
   "include": ["src/**/*"],
-  "exclude": ["node_modules", "dist", "coverage"]
+  "exclude": ["node_modules", "dist", "coverage", "src/__tests__"]
 }
 

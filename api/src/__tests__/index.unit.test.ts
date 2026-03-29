@@ -1,6 +1,6 @@
 import {describe, it, expect, beforeEach, vi} from 'vitest';
 
-vi.mock('../generated/wasm/mini-sql-engine.mjs', () => ({
+vi.mock('../wasm/mini-sql-engine.mjs', () => ({
     helloWorld: vi.fn(() => 'Hello, World!'),
 }));
 
