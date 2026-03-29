@@ -9,8 +9,15 @@ repositories {
 }
 
 kotlin {
+    jvm()
     wasmJs {
         binaries.executable()
         browser()
+    }
+
+    sourceSets {
+        commonTest.dependencies {
+            implementation(kotlin("test"))
+        }
     }
 }
