@@ -1,15 +1,5 @@
-package com.minisql.engine
+package com.minisql.engine.lexer
 
-import com.minisql.com.minisql.engine.CommaToken
-import com.minisql.com.minisql.engine.CreateToken
-import com.minisql.com.minisql.engine.IdentifierToken
-import com.minisql.com.minisql.engine.LParToken
-import com.minisql.com.minisql.engine.Lexer
-import com.minisql.com.minisql.engine.RParToken
-import com.minisql.com.minisql.engine.SemiColonToken
-import com.minisql.com.minisql.engine.TableToken
-import com.minisql.com.minisql.engine.Token
-import com.minisql.com.minisql.engine.TypeToken
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
@@ -23,7 +13,7 @@ class LexerTest {
 
         for ((index, token) in this.withIndex()) {
             val predicate = predicates[index]
-            assertTrue(predicate(token))
+            assertTrue(predicate(token), "Token at index $index does not match predicate")
         }
     }
 
@@ -36,7 +26,7 @@ class LexerTest {
         val result = lexer.tokenize(expression)
 
         // Then
-        assertEquals(11, result.size)
+        assertEquals(12, result.size)
         result.verifyTokens(
             listOf(
                 { it is CreateToken },
@@ -49,7 +39,8 @@ class LexerTest {
                 { it is IdentifierToken && it.identifier == "balance" },
                 { it is TypeToken && it.type == "INT" },
                 { it is RParToken },
-                { it is SemiColonToken }
+                { it is SemiColonToken },
+                { it is EOFToken }
             )
         )
     }
