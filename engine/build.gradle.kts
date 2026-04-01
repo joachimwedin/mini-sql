@@ -37,14 +37,14 @@ tasks.assemble {
     dependsOn(buildWasm)
 }
 
-val generateLexerTransitions by tasks.registering(JavaExec::class) {
-    description = "Runs the lexer table generator and updates LexerTransitions.kt"
+val generateLexerDFA by tasks.registering(JavaExec::class) {
+    description = "Runs the lexer DFA generator and updates LexerDFA.kt"
 
     val jvmCompilation = kotlin.jvm().compilations["main"]
     mainClass.set("com.minisql.engine.lexer.gen.GeneratorKt")
     classpath = jvmCompilation.runtimeDependencyFiles + jvmCompilation.output.allOutputs
 
-    val outputFile = project.file("src/commonMain/kotlin/com/minisql/engine/lexer/LexerTransitions.kt")
+    val outputFile = project.file("src/commonMain/kotlin/com/minisql/engine/lexer/LexerDFA.kt")
     val capture = ByteArrayOutputStream()
     standardOutput = capture
 
