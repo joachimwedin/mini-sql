@@ -4,7 +4,7 @@ import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import java.io.ByteArrayOutputStream
 
 plugins {
-    kotlin("multiplatform") version "2.2.21"
+    alias(libs.plugins.kotlin.multiplatform)
 }
 
 repositories {
@@ -23,6 +23,18 @@ kotlin {
             implementation(kotlin("test"))
         }
     }
+}
+
+val buildWasm by tasks.registering(Copy::class) {
+    description = "Copies the production WASM build output into build/wasm"
+    dependsOn("wasmJsBrowserProductionWebpack")
+
+    from("build/compileSync/wasmJs/main/productionExecutable/optimized")
+    into(layout.buildDirectory.dir("wasm"))
+}
+
+tasks.assemble {
+    dependsOn(buildWasm)
 }
 
 val generateLexerTransitions by tasks.registering(JavaExec::class) {

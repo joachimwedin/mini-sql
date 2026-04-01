@@ -8,4 +8,4 @@ val lexer = Lexer()
 
 @OptIn(ExperimentalJsExport::class)
 @JsExport
-fun helloWorld(): String = lexer.tokenize("CREATE TABLE users (id INT, balance INT);").joinToString(separator = "\n")
+fun helloWorld(): String = "Hej8: ${lexer.tokenize("CREATE TABLE users (id INT, balance INT);").joinToString(separator = "\n")}"

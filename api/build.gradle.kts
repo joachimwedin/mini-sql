@@ -1,40 +1,36 @@
-import java.nio.file.Files
-import java.nio.file.StandardCopyOption
+import com.github.gradle.node.npm.task.NpmTask
 
 plugins {
     id("base")
+    alias(libs.plugins.node.gradle)
 }
 
-tasks.register("buildWasm") {
-    description = "Build WASM from engine module"
-    dependsOn(":engine:wasmJsBrowserProductionWebpack")
-    
-    doLast {
-        val engineBuildDir = project(":engine").buildDir
-        val engineWasmDir = File(engineBuildDir, "compileSync/wasmJs/main/productionExecutable/optimized")
-        val bridgeWasmDir = File(project.projectDir, "src/wasm")
-        
-        if (!engineWasmDir.exists()) {
-            println("Warning: Engine WASM build directory not found at ${engineWasmDir.absolutePath}")
-            return@doLast
-        }
-        
-        // Ensure output directory exists
-        bridgeWasmDir.mkdirs()
-        
-        // Copy WASM files (generated, not source code)
-        val wasmFile = File(engineWasmDir, "mini-sql-engine.wasm")
-        val mjsFile = File(engineWasmDir, "mini-sql-engine.mjs")
-        val uninstantiatedMjsFile = File(engineWasmDir, "mini-sql-engine.uninstantiated.mjs")
-        
-        listOf(wasmFile, mjsFile, uninstantiatedMjsFile).forEach { srcFile ->
-            if (srcFile.exists()) {
-                val destFile = File(bridgeWasmDir, srcFile.name)
-                Files.copy(srcFile.toPath(), destFile.toPath(), StandardCopyOption.REPLACE_EXISTING)
-                println("Copied ${srcFile.name} to bridge/generated/wasm/")
-            } else {
-                println("Warning: Expected file not found: ${srcFile.absolutePath}")
-            }
-        }
-    }
+node {
+    version.set(libs.versions.node.asProvider())
+    download.set(true)
+}
+
+tasks.register<NpmTask>("npmBuild") {
+    dependsOn("npmInstall")
+    dependsOn("buildWasm")
+    args.set(listOf("run", "build"))
+}
+
+tasks.register<Copy>("buildWasm") {
+    dependsOn(":engine:buildWasm")
+
+    from(project(":engine").layout.buildDirectory.dir("wasm"))
+    into(File(project.projectDir, "src/wasm"))
+}
+
+tasks.assemble {
+    dependsOn("npmBuild")
+}
+
+tasks.clean {
+    delete(File(project.projectDir, ".gradle"))
+    delete(File(project.projectDir, "src/wasm"))
+    delete(File(project.projectDir, "dist"))
+    delete(File(project.projectDir, "build"))
+    delete(File(project.projectDir, "node_modules"))
 }

@@ -1,21 +1,35 @@
+import com.github.gradle.node.npm.task.NpmTask
+
 plugins {
     id("base")
+    alias(libs.plugins.node.gradle)
 }
 
-tasks.register<Exec>("buildApiNpm") {
-    description = "Build API npm module"
-    workingDir = project(":api").projectDir
-    commandLine("npm", "run", "build")
+node {
+    version.set(libs.versions.node.asProvider())
+    download.set(true)
 }
 
-tasks.register<Exec>("npmInstall") {
-    description = "Install npm dependencies for playground"
-    dependsOn("buildApiNpm")
-    workingDir = project.projectDir
-    commandLine("npm", "install")
+tasks.npmInstall {
+    dependsOn(":api:assemble")
 }
 
-tasks.named("assemble") {
+tasks.register<NpmTask>("npmBuild") {
     dependsOn("npmInstall")
+    args.set(listOf("run", "build"))
 }
 
+tasks.register<NpmTask>("dev") {
+    dependsOn("npmBuild")
+    args.set(listOf("run", "dev"))
+}
+
+tasks.assemble {
+    dependsOn("npmBuild")
+}
+
+tasks.clean {
+    delete(File(project.projectDir, "build"))
+    delete(File(project.projectDir, "dist"))
+    delete(File(project.projectDir, "node_modules"))
+}
