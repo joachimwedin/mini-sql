@@ -3,6 +3,8 @@ plugins {
 }
 
 tasks.assemble {
+    dependsOn(":engine:assemble")
+    dependsOn(":api:assemble")
     dependsOn(":playground:assemble")
 }
 
