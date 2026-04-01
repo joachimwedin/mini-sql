@@ -19,11 +19,6 @@ tasks.register<NpmTask>("npmBuild") {
     args.set(listOf("run", "build"))
 }
 
-tasks.register<NpmTask>("dev") {
-    dependsOn("npmBuild")
-    args.set(listOf("run", "dev"))
-}
-
 tasks.assemble {
     dependsOn("npmBuild")
 }
